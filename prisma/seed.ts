@@ -10,6 +10,7 @@ const prisma = new PrismaClient({
 
 
 async function main() {
+
     console.log('Seeding database...');
 
     // 1. Create Job Types

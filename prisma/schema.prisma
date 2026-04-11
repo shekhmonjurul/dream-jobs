@@ -3,6 +3,10 @@
 
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
+// ============================================================================
+// GENERATOR
+// ============================================================================
+
 generator client {
   provider = "prisma-client"
   output   = "../app/generated/prisma"
@@ -12,11 +16,14 @@ datasource db {
   provider = "postgresql"
 }
 
+// ============================================================================
+// APPLICATION TABLES
+// ============================================================================
 
 model JobType {
-  id    Int    @id @default(autoincrement())
-  name  String @unique // e.g., 'Government', 'Private'
-  jobs  Job[]
+  id   Int    @id @default(autoincrement())
+  name String @unique // e.g., 'Government', 'Private'
+  jobs Job[]
 }
 
 model SalaryScale {
@@ -28,33 +35,103 @@ model SalaryScale {
 }
 
 model Job {
-  id             String    @id @default(uuid())
-  designation    String    // পদের নাম
-  vacancies      Int?      // শূন্যপদ
-  minAge         Int?      @default(18)
-  maxAge         Int?      @default(30)
-  nationality    String    @default("Bangladeshi")
+  id               String    @id @default(uuid())
+  designation      String // পদের নাম
+  vacancies        Int? // শূন্যপদ
+  minAge           Int?      @default(18)
+  maxAge           Int?      @default(30)
+  nationality      String    @default("Bangladeshi")
   applicationStart DateTime?
   applicationEnd   DateTime?
-  detailsLink    String?   // সার্কুলার ইমেজ বা পিডিএফ লিংক
-  applyLink      String?   // সরাসরি আবেদনের লিংক
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  detailsLink      String? // সার্কুলার ইমেজ বা পিডিএফ লিংক
+  applyLink        String? // সরাসরি আবেদনের লিংক
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 
   // Foreign Keys
-  jobTypeId      Int
-  jobType        JobType   @relation(fields: [jobTypeId], references: [id])
-  salaryScaleId  Int
-  salaryScale    SalaryScale @relation(fields: [salaryScaleId], references: [id])
-  
+  jobTypeId     Int
+  jobType       JobType        @relation(fields: [jobTypeId], references: [id])
+  salaryScaleId Int
+  salaryScale   SalaryScale    @relation(fields: [salaryScaleId], references: [id])
   // Relation to Education
-  educations     JobEducation[]
+  educations    JobEducation[]
 }
 
 model JobEducation {
-  id             Int    @id @default(autoincrement())
+  id             Int     @id @default(autoincrement())
   educationTitle String // e.g., 'BSc in CSE', 'HSC'
-  requirements   String? @db.Text 
+  requirements   String? @db.Text
   jobId          String
-  job            Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  job            Job     @relation(fields: [jobId], references: [id], onDelete: Cascade)
+}
+
+// ============================================================================
+// BETTER-AUTH TABLES
+// ============================================================================
+
+model User {
+  id            String    @id
+  name          String
+  email         String
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+
+  username        String?
+  displayUsername String?
+
+  @@unique([email])
+  @@map("user")
+  @@unique([username])
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
 }
