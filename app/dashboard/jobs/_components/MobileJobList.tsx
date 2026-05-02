@@ -4,10 +4,9 @@ import { JobData } from './types';
 
 interface MobileJobListProps {
   jobs: JobData[];
-  onDelete: (id: string) => void;
 }
 
-export default function MobileJobList({ jobs, onDelete }: MobileJobListProps) {
+export default function MobileJobList({ jobs }: MobileJobListProps) {
   return (
     <div className="md:hidden flex flex-col gap-3 sm:gap-4 bg-[#F8FAFC] p-3 sm:p-4 rounded-b-2xl">
       {jobs.length > 0 ? (
@@ -19,7 +18,7 @@ export default function MobileJobList({ jobs, onDelete }: MobileJobListProps) {
               <div className="text-sm text-gray-600 font-medium mt-0.5">{job.designation}</div>
               <div className="flex items-center gap-2 text-[10px] text-gray-400 mt-2">
                 <span className="bg-gray-100 px-2 py-0.5 rounded font-bold uppercase tracking-tighter">{job.id}</span>
-                <span className="flex items-center gap-1 font-medium"><Building size={12}/>{job.company}</span>
+                <span className="flex items-center gap-1 font-medium"><Building size={12}/>{job.jobType}</span>
               </div>
             </div>
             
@@ -37,7 +36,7 @@ export default function MobileJobList({ jobs, onDelete }: MobileJobListProps) {
                  </div>
                  <div className="flex gap-1 border-l border-gray-100 pl-2">
                    <button className="p-1.5 text-gray-400 hover:text-blue-600 transition-all rounded-md bg-gray-50"><Edit2 size={14} /></button>
-                   <button onClick={() => onDelete(job.id)} className="p-1.5 text-gray-400 hover:text-red-600 transition-all rounded-md bg-gray-50"><Trash2 size={14} /></button>
+                   <button className="p-1.5 text-gray-400 hover:text-red-600 transition-all rounded-md bg-gray-50"><Trash2 size={14} /></button>
                  </div>
               </div>
               

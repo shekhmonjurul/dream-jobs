@@ -1,7 +1,7 @@
 export interface JobData {
   id: string;
   name: string;
-  company: string;
+  jobType: string;
   designation: string;
   vacancies: number;
   salary: string;
