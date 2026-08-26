@@ -85,13 +85,13 @@ export default function Login() {
                 <label className="text-sm font-bold text-gray-700" htmlFor="password">
                   Password
                 </label>
-                <button
+                {/* <button
                   type="button"
                   className="text-xs font-semibold hover:underline"
                   style={{ color: brandColor }}
                 >
                   Forgot?
-                </button>
+                </button> */}
               </div>
               <div className="relative group">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -116,7 +116,7 @@ export default function Login() {
             </div>
 
             {/* Remember Me Toggle */}
-            <div className="flex items-center">
+            {/* <div className="flex items-center">
               <input
                 id="remember-me"
                 type="checkbox"
@@ -126,7 +126,7 @@ export default function Login() {
               <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-600 cursor-pointer font-medium">
                 Keep me logged in
               </label>
-            </div>
+            </div> */}
 
             {/* Submit Button with Custom Color */}
             <button
@@ -149,7 +149,7 @@ export default function Login() {
         </div>
 
         {/* Footer */}
-        <div className="px-8 py-5 bg-gray-50 border-t border-gray-100 text-center">
+        {/* <div className="px-8 py-5 bg-gray-50 border-t border-gray-100 text-center">
           <p className="text-sm text-gray-600 font-medium">
             Don't have an account?{' '}
             <button
@@ -159,7 +159,7 @@ export default function Login() {
               Create Account
             </button>
           </p>
-        </div>
+        </div> */}
       </div>
     </div>
   );
