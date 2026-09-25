@@ -1,6 +1,8 @@
-import { PrismaClient, Prisma } from "../app/generated/prisma/client";
+import { PrismaClient } from "../app/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import "dotenv/config";
+import { auth } from "../lib/auth";
+
 const adapter = new PrismaPg({
     connectionString: process.env.DATABASE_URL,
 });
@@ -8,10 +10,30 @@ const prisma = new PrismaClient({
     adapter,
 });
 
-
 async function main() {
-
     console.log('Seeding database...');
+
+    // 0. Create Admin User via Better-Auth
+    const existingAdmin = await prisma.user.findUnique({
+        where: { email: "admin@dreamjobs.com" }
+    });
+
+    if (!existingAdmin) {
+        try {
+            await auth.api.signUpEmail({
+                body: {
+                    email: "admin@dreamjobs.com",
+                    password: "adminpassword123",
+                    name: "Admin User"
+                }
+            });
+            console.log('✅ Admin User seeded: admin@dreamjobs.com / adminpassword123');
+        } catch (err) {
+            console.log('⚠️ Note creating admin user:', err);
+        }
+    } else {
+        console.log('✅ Admin User already exists: admin@dreamjobs.com');
+    }
 
     // 1. Create Job Types
     const govtJobType = await prisma.jobType.upsert({
@@ -43,7 +65,7 @@ async function main() {
         { name: 'Negotiable', min: null, max: null },
     ];
 
-    const scaleRecords: Record<string, any> = {};
+    const scaleRecords: Record<string, { id: number }> = {};
     for (const s of scales) {
         scaleRecords[s.name] = await prisma.salaryScale.upsert({
             where: { scaleName: s.name },

@@ -16,7 +16,7 @@ export default function NotFound() {
         <h2 className="text-xl font-bold text-slate-700 mb-4 uppercase tracking-wider text-sm">Page Not Found</h2>
         
         <p className="text-slate-500 mb-8 leading-relaxed">
-          The destination you are trying to reach either doesn't exist or has been moved. Let's get you back to finding your dream job!
+          The destination you are trying to reach either doesn&apos;t exist or has been moved. Let&apos;s get you back to finding your dream job!
         </p>
 
         <Link 

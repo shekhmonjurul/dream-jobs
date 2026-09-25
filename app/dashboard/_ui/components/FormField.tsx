@@ -15,9 +15,9 @@ export default function FormField({ label, icon: Icon, children, className = "",
   
   // Clone the child element to inject the id if it doesn't already have one
   let element = children;
-  if (React.isValidElement(children)) {
-      const child = children as React.ReactElement<any>;
-      element = React.cloneElement(child, { id: child.props.id || fieldId } as any);
+  if (React.isValidElement<{ id?: string }>(children)) {
+      const child = children;
+      element = React.cloneElement(child, { id: child.props.id || fieldId });
   }
 
   return (

@@ -1,20 +1,9 @@
-"use client"
+"use client";
 import React, { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import {
     Briefcase,
-    Users,
-    DollarSign,
-    Search,
-    Building,
     LayoutDashboard,
-    Plus,
-    Bell,
-    Edit2,
-    Trash2,
-    CheckCircle,
-    Clock,
-    TrendingUp,
-    Calendar,
     X
 } from 'lucide-react';
 import SidebarItem from './SidebarItem';
@@ -26,11 +15,13 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: SidebarProps) {
-    const [activeTab, setActiveTab] = useState<string>('dashboard');
-    const [searchTerm, setSearchTerm] = useState<string>("");
+    const pathname = usePathname();
     const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
 
     const primaryColor: string = "#07906a";
+    const isDashboardActive = pathname === "/dashboard";
+    const isJobsActive = pathname.startsWith("/dashboard/jobs");
+
     return (
         <aside
             className={`bg-white border-r border-gray-200 flex flex-col h-screen transition-transform duration-300 ease-in-out z-50 fixed md:sticky top-0 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'} ${isCollapsed ? 'md:w-20 w-70' : 'w-80'}`}
@@ -41,8 +32,7 @@ export default function Sidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: Sideb
                     className={`flex items-center cursor-pointer ${isCollapsed ? 'justify-center' : 'justify-start gap-2.5'}`}
                 >
                     <div className="shrink-0 overflow-hidden bg-white rounded-xl shadow-sm border border-gray-100">
-
-                        <Image src="/logo.png" alt="Logo" className=" object-contain pointer-events-none" width={40} height={40} />
+                        <Image src="/logo.png" alt="Logo" className="object-contain pointer-events-none" width={40} height={40} />
                     </div>
                     {!isCollapsed && (
                         <div className="flex items-center font-black text-2xl tracking-tight overflow-hidden whitespace-nowrap" style={{ color: primaryColor }}>
@@ -61,9 +51,9 @@ export default function Sidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: Sideb
             </div>
 
             <nav className="flex-1 px-3 space-y-1">
-                <SidebarItem icon={<LayoutDashboard size={20} />} label="Dashboard" active={activeTab === 'dashboard'} collapsed={isCollapsed} primaryColor={primaryColor} href="/dashboard" />
-                <SidebarItem icon={<Briefcase size={20} />} label="All Jobs" active={activeTab === 'all-jobs'} collapsed={isCollapsed} primaryColor={primaryColor} href="/dashboard/jobs" />
+                <SidebarItem icon={<LayoutDashboard size={20} />} label="Dashboard" active={isDashboardActive} collapsed={isCollapsed} primaryColor={primaryColor} href="/dashboard" />
+                <SidebarItem icon={<Briefcase size={20} />} label="All Jobs" active={isJobsActive} collapsed={isCollapsed} primaryColor={primaryColor} href="/dashboard/jobs" />
             </nav>
         </aside>
-    )
+    );
 }

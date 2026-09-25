@@ -7,10 +7,14 @@ import { JobData } from './_components/types';
 
 import getAllJobs from '../_backend/getAllJobs';
 
-
-export default async function JobsPage() {
+export default async function JobsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}) {
+  const params = await searchParams;
   const primaryColor = "#07906a";
-  const jobs: JobData[] = await getAllJobs()
+  const jobs: JobData[] = await getAllJobs(params.q);
 
   return (
     <div className="w-full bg-white rounded-2xl sm:rounded-3xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
@@ -37,21 +41,15 @@ export default async function JobsPage() {
           scrollbarColor: `${primaryColor} #f1f1f1`
         }}
       >
-        Desktop View
         <DesktopJobTable jobs={jobs} />
-
-        {/* Mobile View */}
         <MobileJobList jobs={jobs} />
       </div>
       {/* SCROLLABLE CONTAINER END */}
 
       <div className="p-4 border-t border-gray-50 flex justify-between items-center bg-gray-50/30">
         <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">
-          Showing {jobs.length} of {jobs.length} entries
+          Showing {jobs.length} entries {params.q ? `matching "${params.q}"` : ""}
         </p>
-        <button className="text-xs font-bold text-gray-400 hover:text-gray-600 transition-colors uppercase tracking-widest">
-          View Full List
-        </button>
       </div>
     </div>
   );
