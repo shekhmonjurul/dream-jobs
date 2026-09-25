@@ -55,6 +55,11 @@ model Job {
   salaryScale   SalaryScale    @relation(fields: [salaryScaleId], references: [id])
   // Relation to Education
   educations    JobEducation[]
+
+  @@index([createdAt])
+  @@index([jobTypeId])
+  @@index([salaryScaleId])
+  @@index([applicationEnd])
 }
 
 model JobEducation {

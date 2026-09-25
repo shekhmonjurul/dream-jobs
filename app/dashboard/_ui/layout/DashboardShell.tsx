@@ -1,5 +1,6 @@
-"use client"
-import React, { useState } from 'react';
+"use client";
+
+import React, { useState, Suspense } from 'react';
 import Sidebar from './Sidebar';
 import Topbar from './Topbar';
 
@@ -21,8 +22,10 @@ export default function DashboardShell({ children }: { children: React.ReactNode
 
       {/* Right Side Section Box */}
       <div className="flex-1 flex flex-col min-w-0 transition-all duration-300 w-full sm:w-auto">
-        {/* top bar */}
-        <Topbar onMenuClick={() => setIsMobileMenuOpen(true)} />
+        {/* top bar with Suspense boundary */}
+        <Suspense fallback={<div className="h-16 bg-white border-b border-gray-200" />}>
+          <Topbar onMenuClick={() => setIsMobileMenuOpen(true)} />
+        </Suspense>
 
         {/* main content */}
         <main className="flex-1 overflow-auto p-2 sm:p-4 md:p-6 min-h-[calc(100vh-4rem)] bg-[#F8FAFC]">
