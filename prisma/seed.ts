@@ -229,7 +229,9 @@ main()
     .catch((e) => {
         console.error('❌ Error during seeding:', e);
         process.exit(1);
+
     })
     .finally(async () => {
+        console.log("hi");
         await prisma.$disconnect();
     });
