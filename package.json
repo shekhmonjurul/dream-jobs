@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "next dev",
     "dev:webpack": "next dev --webpack",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "postinstall": "prisma generate",
+    "seed": "prisma db seed",
     "start": "next start",
     "lint": "eslint"
   },
