@@ -13,27 +13,8 @@ const prisma = new PrismaClient({
 async function main() {
     console.log('Seeding database...');
 
-    // 0. Create Admin User via Better-Auth
-    const existingAdmin = await prisma.user.findUnique({
-        where: { email: "admin@dreamjobs.com" }
-    });
 
-    if (!existingAdmin) {
-        try {
-            await auth.api.signUpEmail({
-                body: {
-                    email: "admin@dreamjobs.com",
-                    password: "adminpassword123",
-                    name: "Admin User"
-                }
-            });
-            console.log('✅ Admin User seeded: admin@dreamjobs.com / adminpassword123');
-        } catch (err) {
-            console.log('⚠️ Note creating admin user:', err);
-        }
-    } else {
-        console.log('✅ Admin User already exists: admin@dreamjobs.com');
-    }
+
 
     // 1. Create Job Types
     // const govtJobType = await prisma.jobType.upsert({
